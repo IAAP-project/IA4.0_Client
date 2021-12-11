@@ -5,6 +5,7 @@
 import logging
 import socket
 import struct
+import time
 
 import select
 import bitstring
@@ -34,6 +35,7 @@ class RobotTCPClient:
                 packetLen = int.from_bytes(self.recvBuffer[1: 5], 'big')
                 if packetLen <= config.PACKET_HEADER_SITE or packetLen > config.PACKET_MAX_LEN:
                     # wrong data
+                    time.sleep(0.6)
                     return self.receiveFromServer()
                 self.remainingBytes = packetLen - config.PACKET_HEADER_SITE
         else:
@@ -45,6 +47,7 @@ class RobotTCPClient:
                 self.recvBuffer.clear()
                 self.remainingBytes = -1
 
+        time.sleep(0.6)
         return self.receiveFromServer()
 
 
@@ -73,3 +76,4 @@ if __name__ == '__main__':
     print(int.from_bytes(stream.bytes[0:4], 'big'))
     print(stream.bytes)
 '''
+
